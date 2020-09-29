@@ -70,8 +70,8 @@ getAvatarLinksList();
 const randomAdvertisements = [];
 
 const getRandomAdvertisement = () => {
-  const getRandomString = (data) => {
-    return data[Math.floor(Math.random() * data.length)];
+  const getRandomString = (items) => {
+    return items[Math.floor(Math.random() * items.length)];
   };
 
   const getRandomNumber = (min, max) => {
@@ -116,19 +116,19 @@ const getRandomAdvertisement = () => {
 
 getRandomAdvertisement();
 
-const pinContentLeft = function (advert) {
+const calculatePinContentLeft = (advert) => {
   return advert.location.x - PinSize.WIDTH / 2;
 };
 
-const pinContentTop = function (advert) {
+const calculatePinContentTop = (advert) => {
   return advert.location.y - PinSize.HEIGHT;
 };
 
 const renderPin = (advert) => {
   const pinContent = pinTemplate.cloneNode(true);
   const img = pinContent.querySelector(`img`);
-  pinContent.style.left = `${pinContentLeft(advert)}px`;
-  pinContent.style.top = `${pinContentTop(advert)}px`;
+  pinContent.style.left = `${calculatePinContentLeft(advert)}px`;
+  pinContent.style.top = `${calculatePinContentTop(advert)}px`;
   img.src = advert.author.avatar;
   img.alt = advert.offer.title;
   return pinContent;
