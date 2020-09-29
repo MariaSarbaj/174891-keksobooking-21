@@ -33,7 +33,7 @@ const PinSize = {
   HEIGHT: 70
 };
 
-const avatarNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
+const AVATAR_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const avatars = [];
 
@@ -43,7 +43,7 @@ const mapPins = document.querySelector(`.map__pins`);
 
 const getAvatarLinksList = () => {
 
-  let shuffleNumbers = function (numbers) {
+  const shuffleNumbers = (numbers) => {
     for (let i = numbers.length - 1; i > 0; i--) {
       const randomItem = Math.floor(Math.random() * (i + 1));
       const temp = numbers[randomItem];
@@ -51,13 +51,13 @@ const getAvatarLinksList = () => {
       numbers[i] = temp;
     }
 
-    return avatarNumbers;
+    return AVATAR_NUMBERS;
   };
 
-  shuffleNumbers(avatarNumbers);
+  shuffleNumbers(AVATAR_NUMBERS);
 
   for (let i = 0; i < ADVERTISEMENT_QUANTITY; i++) {
-    const randomAvatarLink = `img/avatars/user0${avatarNumbers[i]}.png`;
+    const randomAvatarLink = `img/avatars/user0${AVATAR_NUMBERS[i]}.png`;
 
     avatars.push(randomAvatarLink);
   }
@@ -70,8 +70,8 @@ getAvatarLinksList();
 const randomAdvertisements = [];
 
 const getRandomAdvertisement = () => {
-  const getRandomString = (array) => {
-    return array[Math.floor(Math.random() * array.length)];
+  const getRandomString = (data) => {
+    return data[Math.floor(Math.random() * data.length)];
   };
 
   const getRandomNumber = (min, max) => {
@@ -81,13 +81,6 @@ const getRandomAdvertisement = () => {
   const existFeatures = FEATURES.slice(Math.floor(Math.random() * FEATURES.length));
 
   const attachedPhotos = PHOTOS.slice(Math.floor(Math.random() * PHOTOS.length));
-
-  const locationX = (min, max) => {
-    return Math.floor(Math.random() * (max - min) + min) + PinSize.WIDTH / 2;
-  };
-  const locationY = (min, max) => {
-    return Math.floor(Math.random() * (max - min) + min) + PinSize.HEIGHT;
-  };
 
   for (let i = 0; i < ADVERTISEMENT_QUANTITY; i++) {
     const randomAdvertisement = {
@@ -108,8 +101,8 @@ const getRandomAdvertisement = () => {
         photos: attachedPhotos
       },
       location: {
-        x: locationX(AddressX.MIN, AddressX.MAX),
-        y: locationY(AddressY.MIN, AddressY.MAX)
+        x: getRandomNumber(AddressX.MIN, AddressX.MAX),
+        y: getRandomNumber(AddressY.MIN, AddressY.MAX)
       }
     };
 
@@ -123,20 +116,28 @@ const getRandomAdvertisement = () => {
 
 getRandomAdvertisement();
 
-const renderPin = (randomAdvertisement) => {
+const pinContentLeft = function (advert) {
+  return advert.location.x - PinSize.WIDTH / 2;
+};
+
+const pinContentTop = function (advert) {
+  return advert.location.y - PinSize.HEIGHT;
+};
+
+const renderPin = (advert) => {
   const pinContent = pinTemplate.cloneNode(true);
   const img = pinContent.querySelector(`img`);
-  pinContent.style.left = `${randomAdvertisement.location.x}px`;
-  pinContent.style.top = `${randomAdvertisement.location.y}px`;
-  img.src = randomAdvertisement.author.avatar;
-  img.alt = randomAdvertisement.offer.title;
+  pinContent.style.left = `${pinContentLeft(advert)}px`;
+  pinContent.style.top = `${pinContentTop(advert)}px`;
+  img.src = advert.author.avatar;
+  img.alt = advert.offer.title;
   return pinContent;
 };
 
 const fillFragment = () => {
   const fragment = document.createDocumentFragment();
 
-  randomAdvertisements.forEach(function (item) {
+  randomAdvertisements.forEach((item) => {
     fragment.appendChild(renderPin(item));
   });
 
