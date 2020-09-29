@@ -1,52 +1,53 @@
 'use strict';
-const map = document.querySelector(`.map`);
-const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-const mapPins = document.querySelector(`.map__pins`);
-
-const AD_QUANTITY = 8;
-const TITLES_LIST = [`Большая уютная квартира`, `Маленькая неуютная квартира`, `Огромный прекрасный дворец`, `Маленький ужасный дворец`, `Красивый гостевой домик`, `Некрасивый негостеприимный домик`, `Уютное бунгало далеко от моря`, `Неуютное бунгало по колено в воде`];
-const ADDRESS_COORS_X = {
+const ADVERTISEMENT_QUANTITY = 8;
+const TITLES = [`Большая уютная квартира`, `Маленькая неуютная квартира`, `Огромный прекрасный дворец`, `Маленький ужасный дворец`, `Красивый гостевой домик`, `Некрасивый негостеприимный домик`, `Уютное бунгало далеко от моря`, `Неуютное бунгало по колено в воде`];
+const AddressX = {
   MIN: 0,
   MAX: 1200
 };
-const ADDRESS_COORS_Y = {
+const AddressY = {
   MIN: 130,
   MAX: 630
 };
-const PRICE = {
+const Price = {
   MIN: 1000,
   MAX: 1000000
 };
 const TYPES = [`palace`, `flat`, `house`, `bungalow`];
-const ROOMS = {
+const Room = {
   MIN: 1,
   MAX: 5
 };
-const GUESTS = {
+const Guest = {
   MIN: 1,
   MAX: 30
 };
-const CHECKIN = [`12:00`, `13:00`, `14:00`];
-const CHECKOUT = [`12:00`, `13:00`, `14:00`];
+const CHECKIN_TIMES = [`12:00`, `13:00`, `14:00`];
+const CHECKOUT_TIMES = [`12:00`, `13:00`, `14:00`];
 const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const DESCRIPTION = ``;
 const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
 
-const PIN_SIZES = {
+const PinSize = {
   WIDTH: 50,
   HEIGHT: 70
 };
 
-let avatarsList = [];
+const avatarNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
 
-let getAvatarLinksList = function () {
-  let avatarNumbers = [1, 2, 3, 4, 5, 6, 7, 8];
+const avatars = [];
+
+const map = document.querySelector(`.map`);
+const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+const mapPins = document.querySelector(`.map__pins`);
+
+const getAvatarLinksList = () => {
 
   let shuffleNumbers = function (numbers) {
     for (let i = numbers.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      let temp = numbers[j];
-      numbers[j] = numbers[i];
+      const randomItem = Math.floor(Math.random() * (i + 1));
+      const temp = numbers[randomItem];
+      numbers[randomItem] = numbers[i];
       numbers[i] = temp;
     }
 
@@ -55,83 +56,92 @@ let getAvatarLinksList = function () {
 
   shuffleNumbers(avatarNumbers);
 
-  for (let i = 0; i < 8; i++) {
-    let randomAvatarLink = `img/avatars/user0` + avatarNumbers[i] + `.png`;
+  for (let i = 0; i < ADVERTISEMENT_QUANTITY; i++) {
+    const randomAvatarLink = `img/avatars/user0${avatarNumbers[i]}.png`;
 
-    avatarsList.push(randomAvatarLink);
+    avatars.push(randomAvatarLink);
   }
 
-  return avatarsList;
+  return avatars;
 };
 
 getAvatarLinksList();
 
-const randomAdsList = [];
+const randomAdvertisements = [];
 
-let getRandomAd = function () {
-  const getRandomString = function (array) {
+const getRandomAdvertisement = () => {
+  const getRandomString = (array) => {
     return array[Math.floor(Math.random() * array.length)];
   };
 
-  const getRandomNumber = function (min, max) {
+  const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
   };
 
-  const getFeaturesList = FEATURES.slice(Math.floor(Math.random() * FEATURES.length));
+  const existFeatures = FEATURES.slice(Math.floor(Math.random() * FEATURES.length));
 
-  const getPhotosList = PHOTOS.slice(Math.floor(Math.random() * PHOTOS.length));
+  const attachedPhotos = PHOTOS.slice(Math.floor(Math.random() * PHOTOS.length));
 
-  for (let i = 0; i < AD_QUANTITY; i++) {
-    let randomAd = {
+  const locationX = (min, max) => {
+    return Math.floor(Math.random() * (max - min) + min) + PinSize.WIDTH / 2;
+  };
+  const locationY = (min, max) => {
+    return Math.floor(Math.random() * (max - min) + min) + PinSize.HEIGHT;
+  };
+
+  for (let i = 0; i < ADVERTISEMENT_QUANTITY; i++) {
+    const randomAdvertisement = {
       author: {
-        avatar: avatarsList[i]
+        avatar: avatars[i]
       },
       offer: {
-        title: getRandomString(TITLES_LIST),
-        address: `${getRandomNumber(ADDRESS_COORS_X.MIN, ADDRESS_COORS_X.MAX)}, ${getRandomNumber(ADDRESS_COORS_Y.MIN, ADDRESS_COORS_Y.MAX)}`,
-        price: `${getRandomNumber(PRICE.MIN, PRICE.MAX)} ₽/ночь`,
+        title: getRandomString(TITLES),
+        address: ``,
+        price: getRandomNumber(Price.MIN, Price.MAX),
         type: getRandomString(TYPES),
-        rooms: getRandomNumber(ROOMS.MIN, ROOMS.MAX),
-        guests: getRandomNumber(GUESTS.MIN, GUESTS.MAX),
-        checkin: getRandomString(CHECKIN),
-        checkout: getRandomString(CHECKOUT),
-        features: getFeaturesList,
+        rooms: getRandomNumber(Room.MIN, Room.MAX),
+        guests: getRandomNumber(Guest.MIN, Guest.MAX),
+        checkin: getRandomString(CHECKIN_TIMES),
+        checkout: getRandomString(CHECKOUT_TIMES),
+        features: existFeatures,
         description: DESCRIPTION,
-        photos: getPhotosList
+        photos: attachedPhotos
       },
       location: {
-        x: getRandomNumber(ADDRESS_COORS_X.MIN, ADDRESS_COORS_X.MAX) + PIN_SIZES.WIDTH / 2,
-        y: getRandomNumber(ADDRESS_COORS_Y.MIN, ADDRESS_COORS_Y.MAX) + PIN_SIZES.HEIGHT
+        x: locationX(AddressX.MIN, AddressX.MAX),
+        y: locationY(AddressY.MIN, AddressY.MAX)
       }
     };
 
-    randomAdsList.push((randomAd));
+    randomAdvertisement.offer.address = `${randomAdvertisement.location.x}, ${randomAdvertisement.location.y}`;
+
+    randomAdvertisements.push((randomAdvertisement));
   }
 
-  return randomAdsList;
+  return randomAdvertisements;
 };
 
-getRandomAd();
+getRandomAdvertisement();
 
-const renderPin = function (randomAd) {
-  let pinContent = pinTemplate.cloneNode(true);
-  let img = pinContent.querySelector(`img`);
-  pinContent.style.left = randomAd.location.x + `px`;
-  pinContent.style.top = randomAd.location.y + `px`;
-  img.src = randomAd.author.avatar;
-  img.alt = randomAd.offer.title;
+const renderPin = (randomAdvertisement) => {
+  const pinContent = pinTemplate.cloneNode(true);
+  const img = pinContent.querySelector(`img`);
+  pinContent.style.left = `${randomAdvertisement.location.x}px`;
+  pinContent.style.top = `${randomAdvertisement.location.y}px`;
+  img.src = randomAdvertisement.author.avatar;
+  img.alt = randomAdvertisement.offer.title;
   return pinContent;
 };
 
-const feelingFragment = function () {
+const fillFragment = () => {
   const fragment = document.createDocumentFragment();
 
-  randomAdsList.forEach(function (item) {
+  randomAdvertisements.forEach(function (item) {
     fragment.appendChild(renderPin(item));
   });
 
   mapPins.appendChild(fragment);
 };
 
-feelingFragment();
+fillFragment();
 map.classList.remove(`map--faded`);
