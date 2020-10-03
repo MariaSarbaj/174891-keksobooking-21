@@ -42,11 +42,19 @@ const InitialPinPosition = {
 };
 
 const PinRoundSize = {
-  WIDTH: 65,
-  HEIGHT: 65
+  WIDTH: 62,
+  HEIGHT: 62
+};
+
+const PinEdgeSize = {
+  WIDTH: 10,
+  HEIGHT: 22
 };
 
 const AVATAR_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8];
+
+const ENTER_BUTTON = `Enter`;
+
 
 // Generate Ads
 
@@ -171,16 +179,16 @@ mapPinMain.addEventListener(`mousedown`, (evt) => {
     setActivateState();
     fillFragment();
   }
-});
+}, {once: true});
 
 mapPinMain.addEventListener(`keydown`, (evt) => {
-  if (evt.key === `Enter`) {
+  if (evt.key === ENTER_BUTTON) {
     setActivateState();
     fillFragment();
   }
-});
+}, {once: true});
 
-const setActivateState = function () {
+const setActivateState = () => {
   map.classList.remove(`map--faded`);
   adForm.classList.remove(`ad-form--disabled`);
   adFormElements.forEach((item) => {
@@ -189,75 +197,68 @@ const setActivateState = function () {
   filterFormElements.forEach((item) => {
     item.removeAttribute(`disabled`);
   });
-  addressInput.value = `${PinMainPosition.x}, ${PinMainPosition.y}`;
+  addressInput.value = `${pinMainPosition.x}, ${pinMainPosition.y}`;
 };
-
-/* Inactivated map function
-
-const setInactivateState = function () {
-  map.classList.add(`map--faded`);
-  adForm.classList.add(`ad-form--disabled`);
-  adFormElements.forEach((item) => {
-    item.setAttribute(`disabled`, ``);
-  });
-  filterFormElements.forEach((item) => {
-    item.setAttribute(`disabled`, ``);
-  });
-  addressInput.value = `${PinMainInitialPosition.x}, ${PinMainInitialPosition.y}`
-}
-*/
 
 // Filling address input
 
 const addressInput = adForm.querySelector(`#address`);
 
-const PinMainInitialPosition = {
+const pinMainInitialPosition = {
   x: Math.floor(InitialPinPosition.X + PinRoundSize.WIDTH / 2),
   y: Math.floor(InitialPinPosition.Y + PinRoundSize.HEIGHT / 2)
 };
 
-const PinMainPosition = {
-  x: Math.floor(InitialPinPosition.X + PinSize.WIDTH / 2),
-  y: Math.floor(InitialPinPosition.Y + PinSize.HEIGHT / 2)
+const pinMainPosition = {
+  x: Math.floor(InitialPinPosition.X + PinRoundSize.WIDTH / 2),
+  y: Math.floor(InitialPinPosition.Y + PinRoundSize.HEIGHT + PinEdgeSize.HEIGHT)
 };
 
 if (map.classList.contains(`map--faded`)) {
-  addressInput.value = `${PinMainInitialPosition.x}, ${PinMainInitialPosition.y}`;
+  const setInactivateState = function () {
+    map.classList.add(`map--faded`);
+    adForm.classList.add(`ad-form--disabled`);
+    adFormElements.forEach((item) => {
+      item.setAttribute(`disabled`, ``);
+    });
+    filterFormElements.forEach((item) => {
+      item.setAttribute(`disabled`, ``);
+    });
+    addressInput.value = `${pinMainInitialPosition.x}, ${pinMainInitialPosition.y}`;
+  };
+  setInactivateState();
 }
 
 // Rooms and Guests Compare
 
-const roomLimits = {
+const roomToGuestQuantity = {
   1: [`1`],
   2: [`1`, `2`],
   3: [`1`, `2`, `3`],
   100: [`0`]
 };
 
-let roomOptions;
 const roomNumber = adForm.querySelector(`#room_number`);
 const guestQuantity = adForm.querySelector(`#capacity`);
-const guestQuantityOptions = guestQuantity.querySelectorAll(`#capacity option`);
 
-const roomNumberChangeHandler = () => {
-  roomOptions = roomLimits[roomNumber.value];
-  guestQuantityOptions.forEach((elem) => {
-    if (roomOptions.indexOf(elem.value) === -1) {
-      elem.setAttribute(`hidden`, ``);
+const removeAttributeOption = function (element) {
+  element.removeAttribute(`disabled`);
+};
+
+const addClassOption = function (element) {
+  element.classList.add(`hidden`);
+};
+
+const onRoomChange = function () {
+  const guests = roomToGuestQuantity[roomNumber.value];
+  [].forEach.call(guestQuantity.options, function (element) {
+    if (guests.includes(element.value)) {
+      removeAttributeOption(element);
     } else {
-      elem.removeAttribute(`hidden`);
+      addClassOption(element);
     }
   });
-  guestNumberChangeHandler();
+  guestQuantity.value = guests[0];
 };
 
-const guestNumberChangeHandler = () => {
-  roomOptions = roomLimits[roomNumber.value];
-  if (roomOptions.indexOf(guestQuantity.value) === -1) {
-    guestQuantity.setCustomValidity(`Число гостей не соответствует ограничениям для данного числа комнат!`);
-  } else {
-    guestQuantity.setCustomValidity(``);
-  }
-};
-
-roomNumber.addEventListener(`change`, roomNumberChangeHandler);
+roomNumber.addEventListener(`change`, onRoomChange);
