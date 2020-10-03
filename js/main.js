@@ -176,15 +176,13 @@ const filterFormElements = mapFilters.querySelectorAll(`select, fieldset`);
 
 mapPinMain.addEventListener(`mousedown`, (evt) => {
   if (!evt.button) {
-    setActivateState();
-    fillFragment();
+    getActivateMap();
   }
 });
 
 mapPinMain.addEventListener(`keydown`, (evt) => {
   if (evt.key === ENTER_BUTTON) {
-    setActivateState();
-    fillFragment();
+    getActivateMap();
   }
 });
 
@@ -202,6 +200,11 @@ const setActivateState = () => {
 
   mapPinMain.removeEventListener(`mousedown`, setActivateState);
   mapPinMain.removeEventListener(`keydown`, setActivateState);
+};
+
+const getActivateMap = () => {
+  setActivateState();
+  fillFragment();
 };
 
 // Filling address input
@@ -266,3 +269,4 @@ const onRoomNumberChange = function () {
 };
 
 roomNumber.addEventListener(`change`, onRoomNumberChange);
+
