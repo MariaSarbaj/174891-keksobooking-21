@@ -42,12 +42,11 @@ const InitialPinPosition = {
 };
 
 const PinRoundSize = {
-  WIDTH: 62,
-  HEIGHT: 62
+  WIDTH: 65,
+  HEIGHT: 65
 };
 
 const PinEdgeSize = {
-  WIDTH: 10,
   HEIGHT: 22
 };
 
@@ -172,32 +171,37 @@ const fillFragment = () => {
 const mapPinMain = document.querySelector(`.map__pin--main`);
 const adForm = document.querySelector(`.ad-form`);
 const adFormElements = adForm.querySelectorAll(`fieldset`);
-const filterFormElements = document.querySelectorAll(`select, fieldset`);
+const mapFilters = document.querySelector(`.map__filters`);
+const filterFormElements = mapFilters.querySelectorAll(`select, fieldset`);
 
 mapPinMain.addEventListener(`mousedown`, (evt) => {
   if (!evt.button) {
     setActivateState();
     fillFragment();
   }
-}, {once: true});
+});
 
 mapPinMain.addEventListener(`keydown`, (evt) => {
   if (evt.key === ENTER_BUTTON) {
     setActivateState();
     fillFragment();
   }
-}, {once: true});
+});
+
 
 const setActivateState = () => {
   map.classList.remove(`map--faded`);
   adForm.classList.remove(`ad-form--disabled`);
   adFormElements.forEach((item) => {
-    item.removeAttribute(`disabled`);
+    item.disabled = false;
   });
   filterFormElements.forEach((item) => {
-    item.removeAttribute(`disabled`);
+    item.disabled = false;
   });
   addressInput.value = `${pinMainPosition.x}, ${pinMainPosition.y}`;
+
+  mapPinMain.removeEventListener(`mousedown`, setActivateState);
+  mapPinMain.removeEventListener(`keydown`, setActivateState);
 };
 
 // Filling address input
@@ -215,14 +219,14 @@ const pinMainPosition = {
 };
 
 if (map.classList.contains(`map--faded`)) {
-  const setInactivateState = function () {
+  const setInactivateState = () => {
     map.classList.add(`map--faded`);
     adForm.classList.add(`ad-form--disabled`);
     adFormElements.forEach((item) => {
-      item.setAttribute(`disabled`, ``);
+      item.disabled = true;
     });
     filterFormElements.forEach((item) => {
-      item.setAttribute(`disabled`, ``);
+      item.disabled = true;
     });
     addressInput.value = `${pinMainInitialPosition.x}, ${pinMainInitialPosition.y}`;
   };
@@ -241,17 +245,17 @@ const roomToGuestQuantity = {
 const roomNumber = adForm.querySelector(`#room_number`);
 const guestQuantity = adForm.querySelector(`#capacity`);
 
-const removeAttributeOption = function (element) {
+const removeAttributeOption = (element) => {
   element.removeAttribute(`disabled`);
 };
 
-const addClassOption = function (element) {
+const addClassOption = (element) => {
   element.classList.add(`hidden`);
 };
 
-const onRoomChange = function () {
+const onRoomNumberChange = function () {
   const guests = roomToGuestQuantity[roomNumber.value];
-  [].forEach.call(guestQuantity.options, function (element) {
+  [].forEach.call(guestQuantity.options, (element) => {
     if (guests.includes(element.value)) {
       removeAttributeOption(element);
     } else {
@@ -261,4 +265,4 @@ const onRoomChange = function () {
   guestQuantity.value = guests[0];
 };
 
-roomNumber.addEventListener(`change`, onRoomChange);
+roomNumber.addEventListener(`change`, onRoomNumberChange);
