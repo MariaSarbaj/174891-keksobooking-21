@@ -249,25 +249,16 @@ const roomToGuestQuantity = {
 
 const roomNumber = adForm.querySelector(`#room_number`);
 const guestQuantity = adForm.querySelector(`#capacity`);
-
-const setDisabled = (element) => {
-  element.disabled = false;
-};
-
-const hideElement = (element) => {
-  element.classList.add(`hidden`);
-};
+const guestQuantityOptions = guestQuantity.querySelectorAll(`option`);
 
 const onRoomNumberChange = () => {
-  const guests = roomToGuestQuantity[roomNumber.value];
-  [].forEach.call(guestQuantity.options, (element) => {
-    if (guests.includes(element.value)) {
-      setDisabled(element);
-    } else {
-      hideElement(element);
-    }
+  guestQuantityOptions.forEach(function (item) {
+    item.disabled = true;
   });
-  guestQuantity.value = guests[0];
+  roomToGuestQuantity[roomNumber.value].forEach(function (item) {
+    guestQuantity.querySelector(`option` + `[value="${item}"]`).disabled = false;
+    guestQuantity.value = item;
+  });
 };
 
 roomNumber.addEventListener(`change`, onRoomNumberChange);
