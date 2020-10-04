@@ -175,19 +175,15 @@ const mapFilters = document.querySelector(`.map__filters`);
 const filterFormElements = mapFilters.querySelectorAll(`select, fieldset`);
 
 
-const onPinMainMouseClick = (evt) => {
+const onMapPinMainMousedown = (evt) => {
   if (!evt.button) {
     activateMap();
-    mapPinMain.removeEventListener(`mousedown`, onPinMainMouseClick);
-    mapPinMain.removeEventListener(`keydown`, onPinMainEnterPress);
   }
 };
 
-const onPinMainEnterPress = (evt) => {
+const onMapPinMainEnterKeydown = (evt) => {
   if (evt.key === ENTER_BUTTON) {
     activateMap();
-    mapPinMain.removeEventListener(`mousedown`, onPinMainMouseClick);
-    mapPinMain.removeEventListener(`keydown`, onPinMainEnterPress);
   }
 };
 
@@ -206,10 +202,12 @@ const setActivateState = () => {
 const activateMap = () => {
   setActivateState();
   fillFragment();
+  mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown);
+  mapPinMain.removeEventListener(`keydown`, onMapPinMainEnterKeydown);
 };
 
-mapPinMain.addEventListener(`mousedown`, onPinMainMouseClick);
-mapPinMain.addEventListener(`keydown`, onPinMainEnterPress);
+mapPinMain.addEventListener(`mousedown`, onMapPinMainMousedown);
+mapPinMain.addEventListener(`keydown`, onMapPinMainEnterKeydown);
 
 // Filling address input
 
@@ -252,21 +250,21 @@ const roomToGuestQuantity = {
 const roomNumber = adForm.querySelector(`#room_number`);
 const guestQuantity = adForm.querySelector(`#capacity`);
 
-const removeAttributeOption = (element) => {
-  element.disabled = true;
+const setDisabled = (element) => {
+  element.disabled = false;
 };
 
-const addClassOption = (element) => {
+const hideElement = (element) => {
   element.classList.add(`hidden`);
 };
 
-const onRoomNumberChange = function () {
+const onRoomNumberChange = () => {
   const guests = roomToGuestQuantity[roomNumber.value];
   [].forEach.call(guestQuantity.options, (element) => {
     if (guests.includes(element.value)) {
-      removeAttributeOption(element);
+      setDisabled(element);
     } else {
-      addClassOption(element);
+      hideElement(element);
     }
   });
   guestQuantity.value = guests[0];
