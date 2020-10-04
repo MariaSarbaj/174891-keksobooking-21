@@ -174,18 +174,22 @@ const adFormElements = adForm.querySelectorAll(`fieldset`);
 const mapFilters = document.querySelector(`.map__filters`);
 const filterFormElements = mapFilters.querySelectorAll(`select, fieldset`);
 
-mapPinMain.addEventListener(`mousedown`, (evt) => {
+
+const onPinMainMouseClick = (evt) => {
   if (!evt.button) {
-    getActivateMap();
+    activateMap();
+    mapPinMain.removeEventListener(`mousedown`, onPinMainMouseClick);
+    mapPinMain.removeEventListener(`keydown`, onPinMainEnterPress);
   }
-});
+};
 
-mapPinMain.addEventListener(`keydown`, (evt) => {
+const onPinMainEnterPress = (evt) => {
   if (evt.key === ENTER_BUTTON) {
-    getActivateMap();
+    activateMap();
+    mapPinMain.removeEventListener(`mousedown`, onPinMainMouseClick);
+    mapPinMain.removeEventListener(`keydown`, onPinMainEnterPress);
   }
-});
-
+};
 
 const setActivateState = () => {
   map.classList.remove(`map--faded`);
@@ -197,15 +201,15 @@ const setActivateState = () => {
     item.disabled = false;
   });
   addressInput.value = `${pinMainPosition.x}, ${pinMainPosition.y}`;
-
-  mapPinMain.removeEventListener(`mousedown`, setActivateState);
-  mapPinMain.removeEventListener(`keydown`, setActivateState);
 };
 
-const getActivateMap = () => {
+const activateMap = () => {
   setActivateState();
   fillFragment();
 };
+
+mapPinMain.addEventListener(`mousedown`, onPinMainMouseClick);
+mapPinMain.addEventListener(`keydown`, onPinMainEnterPress);
 
 // Filling address input
 
@@ -249,7 +253,7 @@ const roomNumber = adForm.querySelector(`#room_number`);
 const guestQuantity = adForm.querySelector(`#capacity`);
 
 const removeAttributeOption = (element) => {
-  element.removeAttribute(`disabled`);
+  element.disabled = true;
 };
 
 const addClassOption = (element) => {
