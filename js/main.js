@@ -249,17 +249,13 @@ const roomToGuestQuantity = {
 
 const roomNumber = adForm.querySelector(`#room_number`);
 const guestQuantity = adForm.querySelector(`#capacity`);
-const guestQuantityOptions = guestQuantity.querySelectorAll(`option`);
 
 const onRoomNumberChange = () => {
-  guestQuantityOptions.forEach(function (item) {
-    item.disabled = true;
+  const guests = roomToGuestQuantity[roomNumber.value];
+  [].forEach.call(guestQuantity.options, function (element) {
+    element.disabled = !guests.includes(element.value);
   });
-  roomToGuestQuantity[roomNumber.value].forEach(function (item) {
-    guestQuantity.querySelector(`option` + `[value="${item}"]`).disabled = false;
-    guestQuantity.value = item;
-  });
+  guestQuantity.value = guests[0];
 };
 
 roomNumber.addEventListener(`change`, onRoomNumberChange);
-
