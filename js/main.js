@@ -1,4 +1,7 @@
 'use strict';
+
+// Constants
+
 const ADVERTISEMENT_QUANTITY = 8;
 const TITLES = [`Большая уютная квартира`, `Маленькая неуютная квартира`, `Огромный прекрасный дворец`, `Маленький ужасный дворец`, `Красивый гостевой домик`, `Некрасивый негостеприимный домик`, `Уютное бунгало далеко от моря`, `Неуютное бунгало по колено в воде`];
 const AddressX = {
@@ -33,7 +36,26 @@ const PinSize = {
   HEIGHT: 70
 };
 
+const InitialPinPosition = {
+  X: 570,
+  Y: 375
+};
+
+const PinRoundSize = {
+  WIDTH: 65,
+  HEIGHT: 65
+};
+
+const PinEdgeSize = {
+  HEIGHT: 22
+};
+
 const AVATAR_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8];
+
+const ENTER_BUTTON = `Enter`;
+
+
+// Generate Ads
 
 const avatars = [];
 
@@ -144,5 +166,96 @@ const fillFragment = () => {
   mapPins.appendChild(fragment);
 };
 
-fillFragment();
-map.classList.remove(`map--faded`);
+// Activate Map
+
+const mapPinMain = document.querySelector(`.map__pin--main`);
+const adForm = document.querySelector(`.ad-form`);
+const adFormElements = adForm.querySelectorAll(`fieldset`);
+const mapFilters = document.querySelector(`.map__filters`);
+const filterFormElements = mapFilters.querySelectorAll(`select, fieldset`);
+
+
+const onMapPinMainMousedown = (evt) => {
+  if (!evt.button) {
+    activateMap();
+  }
+};
+
+const onMapPinMainEnterKeydown = (evt) => {
+  if (evt.key === ENTER_BUTTON) {
+    activateMap();
+  }
+};
+
+const setActivateState = () => {
+  map.classList.remove(`map--faded`);
+  adForm.classList.remove(`ad-form--disabled`);
+  adFormElements.forEach((item) => {
+    item.disabled = false;
+  });
+  filterFormElements.forEach((item) => {
+    item.disabled = false;
+  });
+  addressInput.value = `${pinMainPosition.x}, ${pinMainPosition.y}`;
+};
+
+const activateMap = () => {
+  setActivateState();
+  fillFragment();
+  mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown);
+  mapPinMain.removeEventListener(`keydown`, onMapPinMainEnterKeydown);
+};
+
+mapPinMain.addEventListener(`mousedown`, onMapPinMainMousedown);
+mapPinMain.addEventListener(`keydown`, onMapPinMainEnterKeydown);
+
+// Filling address input
+
+const addressInput = adForm.querySelector(`#address`);
+
+const pinMainInitialPosition = {
+  x: Math.floor(InitialPinPosition.X + PinRoundSize.WIDTH / 2),
+  y: Math.floor(InitialPinPosition.Y + PinRoundSize.HEIGHT / 2)
+};
+
+const pinMainPosition = {
+  x: Math.floor(InitialPinPosition.X + PinRoundSize.WIDTH / 2),
+  y: Math.floor(InitialPinPosition.Y + PinRoundSize.HEIGHT + PinEdgeSize.HEIGHT)
+};
+
+if (map.classList.contains(`map--faded`)) {
+  const setInactivateState = () => {
+    map.classList.add(`map--faded`);
+    adForm.classList.add(`ad-form--disabled`);
+    adFormElements.forEach((item) => {
+      item.disabled = true;
+    });
+    filterFormElements.forEach((item) => {
+      item.disabled = true;
+    });
+    addressInput.value = `${pinMainInitialPosition.x}, ${pinMainInitialPosition.y}`;
+  };
+  setInactivateState();
+}
+
+// Rooms and Guests Compare
+
+const roomToGuestQuantity = {
+  1: [`1`],
+  2: [`1`, `2`],
+  3: [`1`, `2`, `3`],
+  100: [`0`]
+};
+
+const roomNumber = adForm.querySelector(`#room_number`);
+const guestQuantity = adForm.querySelector(`#capacity`);
+
+const onRoomNumberChange = () => {
+  const guests = roomToGuestQuantity[roomNumber.value];
+  [].forEach.call(guestQuantity.options, function (element) {
+    element.disabled = !guests.includes(element.value);
+  });
+  guestQuantity.value = guests[0];
+};
+
+roomNumber.addEventListener(`change`, onRoomNumberChange);
