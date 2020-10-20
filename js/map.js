@@ -4,7 +4,6 @@
   // Activate Map & Filling address input
 
   const adFormElements = window.data.adForm.querySelectorAll(`fieldset`);
-  const filterFormElements = window.data.mapFilters.querySelectorAll(`select, fieldset`);
   const addressInput = window.data.adForm.querySelector(`#address`);
 
   const onMapPinMainMousedown = (evt) => {
@@ -29,13 +28,12 @@
     y: Math.floor(window.data.InitialPinPosition.Y + window.data.PinRoundSize.HEIGHT + window.data.PinEdgeSize.HEIGHT)
   };
 
+
   const setActivateState = () => {
     window.data.map.classList.remove(`map--faded`);
     window.data.adForm.classList.remove(`ad-form--disabled`);
+    window.load(window.loadHandler.onLoadSuccess, window.loadHandler.onLoadError);
     adFormElements.forEach((item) => {
-      item.disabled = false;
-    });
-    filterFormElements.forEach((item) => {
       item.disabled = false;
     });
     addressInput.value = `${pinMainPosition.x}, ${pinMainPosition.y}`;
@@ -48,7 +46,7 @@
       adFormElements.forEach((item) => {
         item.disabled = true;
       });
-      filterFormElements.forEach((item) => {
+      window.data.filterFormElements.forEach((item) => {
         item.disabled = true;
       });
       addressInput.value = `${pinMainInitialPosition.x}, ${pinMainInitialPosition.y}`;
@@ -58,7 +56,6 @@
 
   const activateMap = () => {
     setActivateState();
-    window.card.fillFragment();
     window.data.mapPinMain.removeEventListener(`mousedown`, onMapPinMainMousedown);
     window.data.mapPinMain.removeEventListener(`keydown`, onMapPinMainEnterKeydown);
   };
