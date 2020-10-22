@@ -13,20 +13,20 @@
     return advert.location.y - window.data.PinSize.HEIGHT;
   };
 
-  const renderPin = (advertisement) => {
+  const renderPin = (advert) => {
     const pinContent = pinTemplate.cloneNode(true);
     const img = pinContent.querySelector(`img`);
-    pinContent.style.left = `${calculatePinContentLeft(advertisement)}px`;
-    pinContent.style.top = `${calculatePinContentTop(advertisement)}px`;
-    img.src = advertisement.author.avatar;
-    img.alt = advertisement.offer.title;
+    pinContent.style.left = `${calculatePinContentLeft(advert)}px`;
+    pinContent.style.top = `${calculatePinContentTop(advert)}px`;
+    img.src = advert.author.avatar;
+    img.alt = advert.offer.title;
     return pinContent;
   };
 
   window.pin = {
-    renderPins: (advertisements) => {
+    renderPins: (adverts) => {
       const fragment = document.createDocumentFragment();
-      advertisements.forEach((item) => {
+      adverts.slice(0, window.data.MAX_PIN_QUANTITY).forEach((item) => {
         if (item.offer) {
           fragment.appendChild(renderPin(item));
         }
