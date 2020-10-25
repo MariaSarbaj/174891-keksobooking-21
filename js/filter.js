@@ -4,49 +4,53 @@
 
   const mapFilters = document.querySelector(`.map__filters`);
   const housingType = mapFilters.querySelector(`#housing-type`);
-
-  let filteredAdverts = [];
-
-  /* Удалить метки */
-
-  const getClearMap = () => {
-    const clearPins = Array.from(document.querySelectorAll(`.map__pin:not(.map__pin--main)`));
-    clearPins.forEach((item) => {
-      item.remove();
-    });
-
-    const clearCard = window.data.map.querySelector(`.map__card`);
-    if (clearCard) {
-      window.data.map.removeChild(clearCard);
-    }
-  };
+  const mapPins = document.querySelector(`.map__pins`);
 
   /* Провести фильтрацию */
 
-  const filtrationItem = (it, item, key) => {
-    return it.value === `any` ? true : it.value === item[key].toString();
+  let filteredAdverts = [];
+
+  const get5Adverts = (array, filter, quantity, newArray) => {
+    newArray = [];
+
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].offer.type === filter || filter === window.data.TYPE_ANY) {
+        newArray.push(array[i]);
+
+        if (newArray.length >= quantity) {
+          break;
+        }
+      }
+    }
+    return newArray;
   };
 
-  const filtrationByType = (item) => {
-    return filtrationItem(housingType, item.offer, `type`);
-  };
-
-  const activateFilter = () => {
-    const onFilterChange = () => {
-      getClearMap();
-      filteredAdverts = window.loadHandler.advertsList.filter(filtrationByType);
-      window.pin.renderPins(filteredAdverts);
-    };
-
-    mapFilters.addEventListener(`change`, () => {
-      window.debounce(() => {
-        onFilterChange();
-      });
-    });
+  const onFilterChange = () => {
+    window.utils.clearMap();
+    let updateAdverts = get5Adverts(window.pin.receivedAdverts, housingType.value, window.data.MAX_PIN_QUANTITY, filteredAdverts);
+    window.filter.renderAdverts(updateAdverts);
   };
 
   window.filter = {
-    activateFilter
+    renderAdverts: (adverts) => {
+      const pinsNumber = adverts.length > window.data.MAX_PIN_QUANTITY ? window.data.MAX_PIN_QUANTITY : adverts.length;
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < pinsNumber; i++) {
+        if (adverts[i].offer) {
+          fragment.appendChild(window.pin.renderPin(adverts[i]));
+        }
+      }
+      mapPins.appendChild(fragment);
+
+    },
+
+    activateSelectionForm: () => {
+      mapFilters.addEventListener(`change`, () => {
+        window.debounce(() => {
+          onFilterChange();
+        });
+      });
+    }
   };
 })();
 

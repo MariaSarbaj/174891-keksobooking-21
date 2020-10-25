@@ -1,13 +1,22 @@
 'use strict';
 
 (() => {
-  window.loadHandler = {
-    onLoadSuccess: (adverts) => {
-      window.loadHandler.advertsList = adverts;
-      window.pin.renderPins(adverts);
-      window.filter.activateFilter();
+  window.utils = {
+
+    /* Удалить метки */
+    clearMap: () => {
+      const clearPins = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+      clearPins.forEach((item) => {
+        item.remove();
+      });
+
+      const clearCard = window.data.map.querySelector(`.map__card`);
+      if (clearCard) {
+        window.data.map.removeChild(clearCard);
+      }
     },
 
+    /* Сообщение об ошибке */
     onLoadError: (message) => {
       const errorMessage = document.createElement(`div`);
       const style = errorMessage.style;
@@ -27,7 +36,6 @@
       style.left = `0`;
       document.body.appendChild(errorMessage);
     },
-
-    advertsList: [],
   };
 })();
+

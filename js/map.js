@@ -28,11 +28,10 @@
     y: Math.floor(window.data.InitialPinPosition.Y + window.data.PinRoundSize.HEIGHT + window.data.PinEdgeSize.HEIGHT)
   };
 
-
   const setActivateState = () => {
     window.data.map.classList.remove(`map--faded`);
     window.data.adForm.classList.remove(`ad-form--disabled`);
-    window.load(window.loadHandler.onLoadSuccess, window.loadHandler.onLoadError);
+    window.load(window.pin.onLoadSuccess, window.utils.onLoadError);
     adFormElements.forEach((item) => {
       item.disabled = false;
     });
