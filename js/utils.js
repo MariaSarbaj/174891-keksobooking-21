@@ -3,19 +3,6 @@
 (() => {
   window.utils = {
 
-    /* Удалить метки */
-    clearMap: () => {
-      const clearPins = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-      clearPins.forEach((item) => {
-        item.remove();
-      });
-
-      const clearCard = window.data.map.querySelector(`.map__card`);
-      if (clearCard) {
-        window.data.map.removeChild(clearCard);
-      }
-    },
-
     /* Сообщение об ошибке */
     onLoadError: (message) => {
       const errorMessage = document.createElement(`div`);

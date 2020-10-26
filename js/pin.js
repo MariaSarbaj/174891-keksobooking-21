@@ -13,15 +13,6 @@
   };
 
   window.pin = {
-    onLoadSuccess: (adverts) => {
-      window.pin.receivedAdverts = adverts;
-      window.filter.renderAdverts(adverts);
-      window.filter.activateSelectionForm();
-      window.data.filterFormElements.forEach((item) => {
-        item.disabled = false;
-      });
-    },
-
     renderPin: (advert) => {
       const pinContent = pinTemplate.cloneNode(true);
       const img = pinContent.querySelector(`img`);
@@ -31,7 +22,5 @@
       img.alt = advert.offer.title;
       return pinContent;
     },
-
-    receivedAdverts: [],
   };
 })();

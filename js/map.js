@@ -31,7 +31,7 @@
   const setActivateState = () => {
     window.data.map.classList.remove(`map--faded`);
     window.data.adForm.classList.remove(`ad-form--disabled`);
-    window.load(window.pin.onLoadSuccess, window.utils.onLoadError);
+    window.load(window.onLoadSuccessHandler.onLoadSuccess, window.utils.onLoadError);
     adFormElements.forEach((item) => {
       item.disabled = false;
     });
@@ -61,4 +61,22 @@
 
   window.data.mapPinMain.addEventListener(`mousedown`, onMapPinMainMousedown);
   window.data.mapPinMain.addEventListener(`keydown`, onMapPinMainEnterKeydown);
+
+  /* Удалить метки */
+  const clearMap = () => {
+    const clearPins = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    clearPins.forEach((item) => {
+      item.remove();
+    });
+
+    const clearCard = window.data.map.querySelector(`.map__card`);
+    if (clearCard) {
+      window.data.map.removeChild(clearCard);
+    }
+  };
+
+  window.map = {
+    clearPinsAndCard: clearMap,
+  };
+
 })();
