@@ -27,15 +27,17 @@
 
     ENTER_BUTTON: `Enter`,
 
+    MAX_PIN_QUANTITY: 5,
+
     URL_LOAD: `https://21.javascript.pages.academy/keksobooking/data`,
     TIMEOUT: 10000,
+
+    TYPE_ANY: `any`,
 
     map: document.querySelector(`.map`),
     mapPinMain: document.querySelector(`.map__pin--main`),
     adForm: document.querySelector(`.ad-form`),
     filterFormElements: mapFilters.querySelectorAll(`select, fieldset`)
-
-
   };
 
 })();
