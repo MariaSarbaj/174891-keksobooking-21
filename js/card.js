@@ -121,15 +121,14 @@
   };
 
   const closePopup = () => {
+    window.pin.removeActive();
     window.map.clearCard();
-    document.removeEventListener(`mousedown`, onClosePopupClick);
-    document.removeEventListener(`keydown`, onClosePopupEscapeKeydown);
   };
 
   const createCard = (item) => {
     const fragment = document.createDocumentFragment();
     fragment.appendChild(renderAdvertCard(item));
-    window.data.map.insertBefore(fragment, filtersContainer);
+    window.data.map.insertBefore(renderAdvertCard(item), filtersContainer);
   };
 
   window.card = {

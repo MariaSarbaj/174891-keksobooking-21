@@ -21,7 +21,7 @@
   };
 
   window.pin = {
-    renderPin: (advert) => {
+    render: (advert) => {
       const pinContent = pinTemplate.cloneNode(true);
       const img = pinContent.querySelector(`img`);
       pinContent.style.left = `${calculatePinContentLeft(advert)}px`;
@@ -38,5 +38,7 @@
 
       return pinContent;
     },
+
+    removeActive: removePinActive
   };
 })();
