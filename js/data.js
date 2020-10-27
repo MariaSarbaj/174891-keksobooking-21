@@ -26,6 +26,7 @@
     },
 
     ENTER_BUTTON: `Enter`,
+    ESCAPE_BUTTON: `Escape`,
 
     MAX_PIN_QUANTITY: 5,
 

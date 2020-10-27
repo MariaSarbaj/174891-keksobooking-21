@@ -63,20 +63,23 @@
   window.data.mapPinMain.addEventListener(`keydown`, onMapPinMainEnterKeydown);
 
   /* Удалить метки */
-  const clearMap = () => {
-    const clearPins = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-    clearPins.forEach((item) => {
+  const clearPins = () => {
+    const pinsToClear = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    pinsToClear.forEach((item) => {
       item.remove();
     });
+  };
 
-    const clearCard = window.data.map.querySelector(`.map__card`);
-    if (clearCard) {
-      window.data.map.removeChild(clearCard);
+  const clearCard = () => {
+    const cardToClear = window.data.map.querySelector(`.map__card`);
+    if (cardToClear) {
+      window.data.map.removeChild(cardToClear);
     }
   };
 
   window.map = {
-    clearPinsAndCard: clearMap,
+    clearPins,
+    clearCard
   };
 
 })();

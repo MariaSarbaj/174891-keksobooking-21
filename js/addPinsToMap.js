@@ -10,7 +10,7 @@
       const fragment = document.createDocumentFragment();
       for (let i = 0; i < pinsNumber; i++) {
         if (adverts[i].offer) {
-          fragment.appendChild(window.pin.renderPin(adverts[i]));
+          fragment.appendChild(window.pin.render(adverts[i]));
         }
       }
       mapPins.appendChild(fragment);
