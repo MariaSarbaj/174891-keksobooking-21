@@ -23,7 +23,8 @@
   };
 
   const renderFilteredAdverts = () => {
-    window.map.clearPinsAndCard();
+    window.map.clearPins();
+    window.map.clearCard();
     const updateAdverts = get5Adverts(window.onLoadSuccessHandler.receivedAdverts, housingType.value, window.data.MAX_PIN_QUANTITY);
     window.addPinsToMap.renderAdverts(updateAdverts);
   };
