@@ -1246,3 +1246,10 @@ fieldset {
 .hidden {
   display: none;
 }
+
+/*.ad-form__element .nonvalid {
+  transform: scale(1.05);
+  border: 1px solid #FF0000;
+  background-color: #F6DADA;
+  color: rgba(0, 0, 0, 0.4);
+}*/
