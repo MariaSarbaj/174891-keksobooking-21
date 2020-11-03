@@ -25,8 +25,6 @@
       HEIGHT: 22
     },
 
-    COORDINATE_CORRECTION: 1,
-
     DragLimit: {
       Y: {
         MIN: 130,
