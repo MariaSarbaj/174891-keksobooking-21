@@ -25,6 +25,15 @@
       HEIGHT: 22
     },
 
+    COORDINATE_CORRECTION: 1,
+
+    DragLimit: {
+      Y: {
+        MIN: 130,
+        MAX: 630
+      }
+    },
+
     ENTER_BUTTON: `Enter`,
     ESCAPE_BUTTON: `Escape`,
 

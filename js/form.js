@@ -55,4 +55,16 @@
     checkoutInput.value = evt.target.value;
   };
   checkTime.addEventListener(`change`, onCheckTimeChange);
+
+  // Set Address
+
+  const addressInput = window.data.adForm.querySelector(`#address`);
+
+  const setAddress = function (location) {
+    addressInput.value = `${location.x}, ${location.y}`;
+  };
+
+  window.form = {
+    setAddress,
+  };
 })();

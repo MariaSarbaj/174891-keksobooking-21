@@ -12,6 +12,7 @@
     }
   };
 
+
   const onMapPinMainEnterKeydown = (evt) => {
     if (evt.key === window.data.ENTER_BUTTON) {
       activateMap();
@@ -23,11 +24,6 @@
     y: Math.floor(window.data.InitialPinPosition.Y + window.data.PinRoundSize.HEIGHT / 2)
   };
 
-  const pinMainPosition = {
-    x: Math.floor(window.data.InitialPinPosition.X + window.data.PinRoundSize.WIDTH / 2),
-    y: Math.floor(window.data.InitialPinPosition.Y + window.data.PinRoundSize.HEIGHT + window.data.PinEdgeSize.HEIGHT)
-  };
-
   const setActivateState = () => {
     window.data.map.classList.remove(`map--faded`);
     window.data.adForm.classList.remove(`ad-form--disabled`);
@@ -35,7 +31,6 @@
     adFormElements.forEach((item) => {
       item.disabled = false;
     });
-    addressInput.value = `${pinMainPosition.x}, ${pinMainPosition.y}`;
   };
 
   if (window.data.map.classList.contains(`map--faded`)) {
@@ -79,7 +74,8 @@
 
   window.map = {
     clearPins,
-    clearCard
+    clearCard,
+    activate: activateMap
   };
 
 })();
