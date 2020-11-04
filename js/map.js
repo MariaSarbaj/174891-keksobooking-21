@@ -23,11 +23,6 @@
     y: Math.floor(window.data.InitialPinPosition.Y + window.data.PinRoundSize.HEIGHT / 2)
   };
 
-  const pinMainPosition = {
-    x: Math.floor(window.data.InitialPinPosition.X + window.data.PinRoundSize.WIDTH / 2),
-    y: Math.floor(window.data.InitialPinPosition.Y + window.data.PinRoundSize.HEIGHT + window.data.PinEdgeSize.HEIGHT)
-  };
-
   const setActivateState = () => {
     window.data.map.classList.remove(`map--faded`);
     window.data.adForm.classList.remove(`ad-form--disabled`);
@@ -35,21 +30,22 @@
     adFormElements.forEach((item) => {
       item.disabled = false;
     });
-    addressInput.value = `${pinMainPosition.x}, ${pinMainPosition.y}`;
+    window.form.setAddress(window.pin.getLocation());
+  };
+
+  const setInactivateState = () => {
+    window.data.map.classList.add(`map--faded`);
+    window.data.adForm.classList.add(`ad-form--disabled`);
+    adFormElements.forEach((item) => {
+      item.disabled = true;
+    });
+    window.data.filterFormElements.forEach((item) => {
+      item.disabled = true;
+    });
+    addressInput.value = `${pinMainInitialPosition.x}, ${pinMainInitialPosition.y}`;
   };
 
   if (window.data.map.classList.contains(`map--faded`)) {
-    const setInactivateState = () => {
-      window.data.map.classList.add(`map--faded`);
-      window.data.adForm.classList.add(`ad-form--disabled`);
-      adFormElements.forEach((item) => {
-        item.disabled = true;
-      });
-      window.data.filterFormElements.forEach((item) => {
-        item.disabled = true;
-      });
-      addressInput.value = `${pinMainInitialPosition.x}, ${pinMainInitialPosition.y}`;
-    };
     setInactivateState();
   }
 
@@ -79,7 +75,9 @@
 
   window.map = {
     clearPins,
-    clearCard
+    clearCard,
+    activate: activateMap,
+    inactivate: setInactivateState
   };
 
 })();

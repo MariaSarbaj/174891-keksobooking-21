@@ -20,6 +20,15 @@
     }
   };
 
+  const getMainPinLocation = () => {
+    const location = {
+      x: Math.floor(window.data.mapPinMain.offsetLeft + window.data.mapPinMain.offsetWidth / 2),
+      y: Math.floor(window.data.mapPinMain.offsetTop + window.data.mapPinMain.offsetHeight + window.data.PinEdgeSize.HEIGHT)
+    };
+
+    return location;
+  };
+
   window.pin = {
     render: (advert) => {
       const pinContent = pinTemplate.cloneNode(true);
@@ -39,6 +48,8 @@
       return pinContent;
     },
 
-    removeActive: removePinActive
+    removeActive: removePinActive,
+
+    getLocation: getMainPinLocation
   };
 })();
