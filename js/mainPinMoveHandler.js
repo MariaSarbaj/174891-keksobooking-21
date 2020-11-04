@@ -29,12 +29,10 @@
 
       // Вычисляем границы области для перемещения
 
-      const mapPinsArea = document.querySelector(`.map__pins`);
-
       const minX = 0 - window.data.mapPinMain.offsetWidth / 2;
-      const maxX = mapPinsArea.offsetWidth - window.data.mapPinMain.offsetWidth / 2;
-      const minY = window.data.DragLimit.Y.MIN;
-      const maxY = window.data.DragLimit.Y.MAX;
+      const maxX = window.data.mapPinsAreaWidth - window.data.mapPinMain.offsetWidth / 2 + window.data.CORRECTION_FACTOR;
+      const minY = window.data.DragLimit.Y.MIN - window.data.mapPinMain.offsetHeight - window.data.PinEdgeSize.HEIGHT;
+      const maxY = window.data.DragLimit.Y.MAX - window.data.mapPinMain.offsetHeight - window.data.PinEdgeSize.HEIGHT;
 
       // Перемещаем метку в найденных границах
 

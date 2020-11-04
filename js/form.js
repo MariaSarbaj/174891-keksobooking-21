@@ -60,9 +60,39 @@
 
   const addressInput = window.data.adForm.querySelector(`#address`);
 
-  const setAddress = function (location) {
+  const setAddress = (location) => {
     addressInput.value = `${location.x}, ${location.y}`;
   };
+
+  // Submit
+
+  const onSubmitForm = (evt) => {
+    evt.preventDefault();
+
+    const onSubmitSuccess = () => {
+      window.data.adForm.reset();
+      window.map.clearPins();
+      window.map.inactivate();
+      window.utils.showSuccessMessage();
+    };
+
+    const onSubmitError = (message) => {
+      window.utils.showErrorMessage(message);
+    };
+
+    window.post(new FormData(window.data.adForm), onSubmitSuccess, onSubmitError);
+  };
+
+  window.data.adForm.addEventListener(`submit`, onSubmitForm);
+
+  // Reset
+
+  const resetButton = window.data.adForm.querySelector(`.ad-form__reset`);
+
+  resetButton.addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    window.data.adForm.reset();
+  });
 
   window.form = {
     setAddress,

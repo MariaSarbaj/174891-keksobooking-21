@@ -1,9 +1,47 @@
 'use strict';
 
 (() => {
+
+  const mainSection = document.querySelector(`main`);
+  const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
+  const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
+
+  const showMessage = (template, errorMessage) => {
+    const messageBody = template.cloneNode(true);
+
+    if (errorMessage) {
+      const errorText = messageBody.querySelector(`.error__message`);
+      errorText.innerText = errorMessage;
+    }
+
+    mainSection.appendChild(messageBody);
+
+    const removeMessage = () => {
+      messageBody.remove();
+      document.removeEventListener(`keydown`, onErrorMessageEscapeKeydown);
+    };
+
+    const onErrorMessageEscapeKeydown = (evt) => {
+      if (evt.key === window.data.ESCAPE_BUTTON) {
+        removeMessage();
+      }
+    };
+
+    const errorButton = messageBody.querySelector(`.error__button`);
+
+    messageBody.addEventListener(`click`, removeMessage);
+
+    if (errorButton) {
+      errorButton.addEventListener(`click`, removeMessage);
+    }
+
+    document.addEventListener(`keydown`, onErrorMessageEscapeKeydown);
+  };
+
   window.utils = {
 
-    /* Сообщение об ошибке */
+    // Сообщение об ошибке при загрузке с сервера
+
     onLoadError: (message) => {
       const errorMessage = document.createElement(`div`);
       const style = errorMessage.style;
@@ -23,6 +61,17 @@
       style.left = `0`;
       document.body.appendChild(errorMessage);
     },
+
+    // Сообщения при отправке
+
+    showSuccessMessage: () => {
+      showMessage(successTemplate);
+    },
+
+    showErrorMessage: (message) => {
+      showMessage(errorTemplate, message);
+    }
+
   };
 })();
 

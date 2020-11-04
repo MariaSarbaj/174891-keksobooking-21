@@ -12,7 +12,6 @@
     }
   };
 
-
   const onMapPinMainEnterKeydown = (evt) => {
     if (evt.key === window.data.ENTER_BUTTON) {
       activateMap();
@@ -31,20 +30,22 @@
     adFormElements.forEach((item) => {
       item.disabled = false;
     });
+    window.form.setAddress(window.pin.getLocation());
+  };
+
+  const setInactivateState = () => {
+    window.data.map.classList.add(`map--faded`);
+    window.data.adForm.classList.add(`ad-form--disabled`);
+    adFormElements.forEach((item) => {
+      item.disabled = true;
+    });
+    window.data.filterFormElements.forEach((item) => {
+      item.disabled = true;
+    });
+    addressInput.value = `${pinMainInitialPosition.x}, ${pinMainInitialPosition.y}`;
   };
 
   if (window.data.map.classList.contains(`map--faded`)) {
-    const setInactivateState = () => {
-      window.data.map.classList.add(`map--faded`);
-      window.data.adForm.classList.add(`ad-form--disabled`);
-      adFormElements.forEach((item) => {
-        item.disabled = true;
-      });
-      window.data.filterFormElements.forEach((item) => {
-        item.disabled = true;
-      });
-      addressInput.value = `${pinMainInitialPosition.x}, ${pinMainInitialPosition.y}`;
-    };
     setInactivateState();
   }
 
@@ -75,7 +76,8 @@
   window.map = {
     clearPins,
     clearCard,
-    activate: activateMap
+    activate: activateMap,
+    inactivate: setInactivateState
   };
 
 })();
