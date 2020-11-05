@@ -16,23 +16,23 @@
 
     mainSection.appendChild(messageBody);
 
-    const removeMessage = () => {
+    const messageRemoveHandler = () => {
       messageBody.remove();
       document.removeEventListener(`keydown`, onErrorMessageEscapeKeydown);
     };
 
     const onErrorMessageEscapeKeydown = (evt) => {
-      if (evt.key === window.data.ESCAPE_BUTTON) {
-        removeMessage();
+      if (evt.key === window.data.ESCAPE_BUTTON || evt.keyCode === window.data.ESCAPE_BUTTON_CODE) {
+        messageRemoveHandler();
       }
     };
 
     const errorButton = messageBody.querySelector(`.error__button`);
 
-    messageBody.addEventListener(`click`, removeMessage);
+    messageBody.addEventListener(`click`, messageRemoveHandler);
 
     if (errorButton) {
-      errorButton.addEventListener(`click`, removeMessage);
+      errorButton.addEventListener(`click`, messageRemoveHandler);
     }
 
     document.addEventListener(`keydown`, onErrorMessageEscapeKeydown);
@@ -60,6 +60,10 @@
       style.top = `0`;
       style.left = `0`;
       document.body.appendChild(errorMessage);
+      setTimeout(() => {
+        document.body.removeChild(errorMessage);
+      }, 3000);
+
     },
 
     // Сообщения при отправке

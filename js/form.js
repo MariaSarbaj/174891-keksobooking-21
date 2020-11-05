@@ -80,7 +80,7 @@
       window.utils.showErrorMessage(message);
     };
 
-    window.post(new FormData(window.data.adForm), onSubmitSuccess, onSubmitError);
+    window.backend(new FormData(window.data.adForm), onSubmitSuccess, onSubmitError, window.data.Method.POST, window.data.URL_POST);
   };
 
   window.data.adForm.addEventListener(`submit`, onSubmitForm);
@@ -92,6 +92,10 @@
   resetButton.addEventListener(`click`, (evt) => {
     evt.preventDefault();
     window.data.adForm.reset();
+    window.map.inactivate();
+    roomNumber.addEventListener(`change`, onRoomNumberChange);
+    priceInput.min = window.data.MIN_PRICE;
+    priceInput.placeholder = window.data.MIN_PRICE;
   });
 
   window.form = {

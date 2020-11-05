@@ -115,7 +115,7 @@
   };
 
   const onClosePopupEscapeKeydown = (evt) => {
-    if (evt.key === window.data.ESCAPE_BUTTON) {
+    if (evt.key === window.data.ESCAPE_BUTTON || evt.keyCode === window.data.ESCAPE_BUTTON_CODE) {
       closePopup();
     }
   };
