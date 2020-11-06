@@ -2,6 +2,8 @@
 
 (() => {
 
+  const setTimeoutInterval = 3000;
+
   const mainSection = document.querySelector(`main`);
   const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
   const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
@@ -29,10 +31,18 @@
 
     const errorButton = messageBody.querySelector(`.error__button`);
 
-    messageBody.addEventListener(`click`, removeMessage);
+    const onMessageBodyClick = () => {
+      removeMessage();
+    };
+
+    const onErrorButtonClick = () => {
+      removeMessage();
+    };
+
+    messageBody.addEventListener(`click`, onMessageBodyClick);
 
     if (errorButton) {
-      errorButton.addEventListener(`click`, removeMessage);
+      errorButton.addEventListener(`click`, onErrorButtonClick);
     }
 
     document.addEventListener(`keydown`, onErrorMessageEscapeKeydown);
@@ -60,6 +70,10 @@
       style.top = `0`;
       style.left = `0`;
       document.body.appendChild(errorMessage);
+      setTimeout(() => {
+        document.body.removeChild(errorMessage);
+      }, setTimeoutInterval);
+
     },
 
     // Сообщения при отправке

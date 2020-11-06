@@ -25,8 +25,8 @@
 
   // Min Price Per Night
 
-  const buildTypeToPrice = {
-    bungalo: 0,
+  const houseTypeToPrice = {
+    bungalow: 0,
     flat: 1000,
     house: 5000,
     palace: 10000
@@ -36,12 +36,19 @@
   const typeInput = window.data.adForm.querySelector(`#type`);
 
   const onTypeInputChange = (evt) => {
-    const minPrice = buildTypeToPrice[evt.target.value];
+    const minPrice = houseTypeToPrice[evt.target.value];
     priceInput.min = minPrice;
     priceInput.placeholder = minPrice;
   };
 
   typeInput.addEventListener(`change`, onTypeInputChange);
+
+  // Initial Values
+
+  const setPriceInputInitial = () => {
+    priceInput.min = window.data.MIN_PRICE;
+    priceInput.placeholder = window.data.MIN_PRICE;
+  };
 
   // CheckIn & Checkout
 
@@ -74,13 +81,15 @@
       window.map.clearPins();
       window.map.inactivate();
       window.utils.showSuccessMessage();
+      roomNumber.addEventListener(`change`, onRoomNumberChange);
+      setPriceInputInitial();
     };
 
     const onSubmitError = (message) => {
       window.utils.showErrorMessage(message);
     };
 
-    window.post(new FormData(window.data.adForm), onSubmitSuccess, onSubmitError);
+    window.backend(new FormData(window.data.adForm), onSubmitSuccess, onSubmitError, window.data.Method.POST, window.data.URL_POST);
   };
 
   window.data.adForm.addEventListener(`submit`, onSubmitForm);
@@ -92,6 +101,9 @@
   resetButton.addEventListener(`click`, (evt) => {
     evt.preventDefault();
     window.data.adForm.reset();
+    window.map.inactivate();
+    roomNumber.addEventListener(`change`, onRoomNumberChange);
+    setPriceInputInitial();
   });
 
   window.form = {

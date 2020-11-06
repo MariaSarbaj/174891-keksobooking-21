@@ -3,8 +3,10 @@
 (() => {
   // Activate Map & Filling address input
 
-  const adFormElements = window.data.adForm.querySelectorAll(`fieldset`);
+  const mapFilters = document.querySelector(`.map__filters`);
+  const adFormFieldsets = window.data.adForm.querySelectorAll(`fieldset`);
   const addressInput = window.data.adForm.querySelector(`#address`);
+  const adFormSubmitButton = window.data.adForm.querySelector(`.ad-form__submit`);
 
   const onMapPinMainMousedown = (evt) => {
     if (!evt.button) {
@@ -26,28 +28,13 @@
   const setActivateState = () => {
     window.data.map.classList.remove(`map--faded`);
     window.data.adForm.classList.remove(`ad-form--disabled`);
-    window.load(window.onLoadSuccessHandler.onLoadSuccess, window.utils.onLoadError);
-    adFormElements.forEach((item) => {
+    window.backend(null, window.loader.onLoadSuccess, window.utils.onLoadError, window.data.Method.GET, window.data.URL_LOAD);
+    adFormFieldsets.forEach((item) => {
       item.disabled = false;
     });
     window.form.setAddress(window.pin.getLocation());
+    adFormSubmitButton.style.pointerEvents = `auto`;
   };
-
-  const setInactivateState = () => {
-    window.data.map.classList.add(`map--faded`);
-    window.data.adForm.classList.add(`ad-form--disabled`);
-    adFormElements.forEach((item) => {
-      item.disabled = true;
-    });
-    window.data.filterFormElements.forEach((item) => {
-      item.disabled = true;
-    });
-    addressInput.value = `${pinMainInitialPosition.x}, ${pinMainInitialPosition.y}`;
-  };
-
-  if (window.data.map.classList.contains(`map--faded`)) {
-    setInactivateState();
-  }
 
   const activateMap = () => {
     setActivateState();
@@ -60,18 +47,42 @@
 
   /* Удалить метки */
   const clearPins = () => {
-    const pinsToClear = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-    pinsToClear.forEach((item) => {
+    const pinsList = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    pinsList.forEach((item) => {
       item.remove();
     });
   };
 
   const clearCard = () => {
-    const cardToClear = window.data.map.querySelector(`.map__card`);
-    if (cardToClear) {
-      window.data.map.removeChild(cardToClear);
+    const card = window.data.map.querySelector(`.map__card`);
+    if (card) {
+      window.data.map.removeChild(card);
     }
   };
+
+  const setInactivateState = () => {
+    window.data.map.classList.add(`map--faded`);
+    window.data.adForm.classList.add(`ad-form--disabled`);
+    adFormFieldsets.forEach((item) => {
+      item.disabled = true;
+    });
+    mapFilters.reset();
+    window.data.filterFormElements.forEach((item) => {
+      item.disabled = true;
+    });
+    window.data.mapPinMain.style.left = `${window.data.InitialPinPosition.X}px`;
+    window.data.mapPinMain.style.top = `${window.data.InitialPinPosition.Y}px`;
+    addressInput.value = `${pinMainInitialPosition.x}, ${pinMainInitialPosition.y}`;
+    clearPins();
+    clearCard();
+    adFormSubmitButton.style.pointerEvents = `none`;
+    window.data.mapPinMain.addEventListener(`mousedown`, onMapPinMainMousedown);
+    window.data.mapPinMain.addEventListener(`keydown`, onMapPinMainEnterKeydown);
+  };
+
+  if (window.data.map.classList.contains(`map--faded`)) {
+    setInactivateState();
+  }
 
   window.map = {
     clearPins,

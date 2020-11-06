@@ -53,6 +53,13 @@
 
     CORRECTION_FACTOR: 1,
 
+    Method: {
+      GET: `GET`,
+      POST: `POST`
+    },
+
+    MIN_PRICE: `1000`,
+
     map: document.querySelector(`.map`),
     mapPinMain: document.querySelector(`.map__pin--main`),
     mapPinsAreaWidth: mapPinsArea.offsetWidth,

@@ -2,9 +2,11 @@
 
 (() => {
 
-  window.post = (data, onSuccess, onError) => {
+  window.backend = (data, onSuccess, onError, method, url) => {
 
     const xhr = new XMLHttpRequest();
+
+    xhr.responseType = `json`;
 
     xhr.addEventListener(`load`, () => {
       let error;
@@ -41,7 +43,7 @@
 
     xhr.timeout = window.data.TIMEOUT;
 
-    xhr.open(`POST`, window.data.URL_POST);
+    xhr.open(method, url);
     xhr.send(data);
   };
 })();
