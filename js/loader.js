@@ -2,10 +2,10 @@
 
 (() => {
 
-  window.onLoadSuccessHandler = {
+  window.loader = {
     onLoadSuccess: (adverts) => {
-      window.onLoadSuccessHandler.receivedAdverts = adverts;
-      window.addPinsToMap.renderAdverts(adverts);
+      window.loader.receivedAdverts = adverts;
+      window.render.addPinsToMap(adverts);
       window.filter.activateSelectionForm();
       window.data.filterFormElements.forEach((item) => {
         item.disabled = false;

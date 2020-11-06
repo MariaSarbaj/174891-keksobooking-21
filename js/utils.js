@@ -2,6 +2,8 @@
 
 (() => {
 
+  const setTimeoutInterval = 3000;
+
   const mainSection = document.querySelector(`main`);
   const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
   const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
@@ -16,23 +18,31 @@
 
     mainSection.appendChild(messageBody);
 
-    const messageRemoveHandler = () => {
+    const removeMessage = () => {
       messageBody.remove();
       document.removeEventListener(`keydown`, onErrorMessageEscapeKeydown);
     };
 
     const onErrorMessageEscapeKeydown = (evt) => {
-      if (evt.key === window.data.ESCAPE_BUTTON || evt.keyCode === window.data.ESCAPE_BUTTON_CODE) {
-        messageRemoveHandler();
+      if (evt.key === window.data.ESCAPE_BUTTON) {
+        removeMessage();
       }
     };
 
     const errorButton = messageBody.querySelector(`.error__button`);
 
-    messageBody.addEventListener(`click`, messageRemoveHandler);
+    const onMessageBodyClick = () => {
+      removeMessage();
+    };
+
+    const onErrorButtonClick = () => {
+      removeMessage();
+    };
+
+    messageBody.addEventListener(`click`, onMessageBodyClick);
 
     if (errorButton) {
-      errorButton.addEventListener(`click`, messageRemoveHandler);
+      errorButton.addEventListener(`click`, onErrorButtonClick);
     }
 
     document.addEventListener(`keydown`, onErrorMessageEscapeKeydown);
@@ -62,7 +72,7 @@
       document.body.appendChild(errorMessage);
       setTimeout(() => {
         document.body.removeChild(errorMessage);
-      }, 3000);
+      }, setTimeoutInterval);
 
     },
 

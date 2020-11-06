@@ -25,8 +25,8 @@
   const renderFilteredAdverts = () => {
     window.map.clearPins();
     window.map.clearCard();
-    const updateAdverts = get5Adverts(window.onLoadSuccessHandler.receivedAdverts, housingType.value, window.data.MAX_PIN_QUANTITY);
-    window.addPinsToMap.renderAdverts(updateAdverts);
+    const updateAdverts = get5Adverts(window.loader.receivedAdverts, housingType.value, window.data.MAX_PIN_QUANTITY);
+    window.render.addPinsToMap(updateAdverts);
   };
 
   window.filter = {

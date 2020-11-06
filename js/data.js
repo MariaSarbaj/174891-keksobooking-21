@@ -35,7 +35,6 @@
 
     ENTER_BUTTON: `Enter`,
     ESCAPE_BUTTON: `Escape`,
-    ESCAPE_BUTTON_CODE: `27`,
 
     MAX_PIN_QUANTITY: 5,
 
