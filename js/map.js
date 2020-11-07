@@ -56,7 +56,7 @@
 
   const clearCard = () => {
     const card = window.data.map.querySelector(`.map__card`);
-    if (card) {
+    if (card !== null) {
       window.data.map.removeChild(card);
       document.removeEventListener(`keydown`, window.card.onClosePopupEscapeKeydown);
     }
@@ -68,10 +68,7 @@
     adFormFieldsets.forEach((item) => {
       item.disabled = true;
     });
-    window.data.mapFilters.reset();
-    window.data.filterFormItems.forEach((item) => {
-      item.disabled = true;
-    });
+    window.filter.deactivateSelectionForm();
     window.data.mapPinMain.style.left = `${window.data.InitialPinPosition.X}px`;
     window.data.mapPinMain.style.top = `${window.data.InitialPinPosition.Y}px`;
     window.form.setAddress(getPinMainInitialPosition());

@@ -123,7 +123,6 @@
   const closePopup = () => {
     window.pin.removeActive();
     window.map.clearCard();
-    document.removeEventListener(`keydown`, onClosePopupEscapeKeydown);
   };
 
   const createCard = (item) => {
@@ -132,7 +131,7 @@
 
   window.card = {
     create: createCard,
-    onClosePopupEscapeKeydown
+    onClosePopupEscapeKeydown,
   };
 
 })();

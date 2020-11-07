@@ -81,9 +81,7 @@
   };
 
   const onMapFiltersChange = () => {
-    window.debounce(() => {
-      renderFilteredAdverts();
-    });
+    window.debounce(renderFilteredAdverts);
   };
 
   window.filter = {
@@ -91,7 +89,14 @@
       window.data.mapFilters.addEventListener(`change`, onMapFiltersChange);
     },
 
-    onChange: onMapFiltersChange
+    onChange: onMapFiltersChange,
+
+    deactivateSelectionForm: () => {
+      window.data.mapFilters.reset();
+      window.data.filterFormItems.forEach((item) => {
+        item.disabled = true;
+      });
+    }
   };
 })();
 
