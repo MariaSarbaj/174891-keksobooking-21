@@ -47,8 +47,8 @@
 
   /* Удалить метки */
   const clearPins = () => {
-    const pinsList = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-    pinsList.forEach((item) => {
+    const pins = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    pins.forEach((item) => {
       item.remove();
     });
   };
