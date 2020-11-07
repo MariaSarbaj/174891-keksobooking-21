@@ -71,18 +71,25 @@
     addressInput.value = `${location.x}, ${location.y}`;
   };
 
+  // Deactivate Page
+
+  const deactivatePage = () => {
+    window.data.adForm.reset();
+    window.data.mapFilters.removeEventListener(`change`, window.filter.onChange);
+    window.map.inactivate();
+    roomNumber.addEventListener(`change`, onRoomNumberChange);
+    setPriceInputInitial();
+  };
+
   // Submit
 
-  const onSubmitForm = (evt) => {
+  const onAdFormSubmit = (evt) => {
     evt.preventDefault();
 
     const onSubmitSuccess = () => {
-      window.data.adForm.reset();
+      deactivatePage();
       window.map.clearPins();
-      window.map.inactivate();
       window.utils.showSuccessMessage();
-      roomNumber.addEventListener(`change`, onRoomNumberChange);
-      setPriceInputInitial();
     };
 
     const onSubmitError = (message) => {
@@ -92,7 +99,7 @@
     window.backend(new FormData(window.data.adForm), onSubmitSuccess, onSubmitError, window.data.Method.POST, window.data.URL_POST);
   };
 
-  window.data.adForm.addEventListener(`submit`, onSubmitForm);
+  window.data.adForm.addEventListener(`submit`, onAdFormSubmit);
 
   // Reset
 
@@ -100,10 +107,7 @@
 
   resetButton.addEventListener(`click`, (evt) => {
     evt.preventDefault();
-    window.data.adForm.reset();
-    window.map.inactivate();
-    roomNumber.addEventListener(`change`, onRoomNumberChange);
-    setPriceInputInitial();
+    deactivatePage();
   });
 
   window.form = {

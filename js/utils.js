@@ -2,7 +2,7 @@
 
 (() => {
 
-  const setTimeoutInterval = 3000;
+  const TIMEOUT_INTERVAL = 3000;
 
   const mainSection = document.querySelector(`main`);
   const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
@@ -72,7 +72,7 @@
       document.body.appendChild(errorMessage);
       setTimeout(() => {
         document.body.removeChild(errorMessage);
-      }, setTimeoutInterval);
+      }, TIMEOUT_INTERVAL);
 
     },
 

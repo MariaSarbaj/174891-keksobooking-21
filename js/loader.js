@@ -7,7 +7,7 @@
       window.loader.receivedAdverts = adverts;
       window.render.addPinsToMap(adverts);
       window.filter.activateSelectionForm();
-      window.data.filterFormElements.forEach((item) => {
+      window.data.filterFormItems.forEach((item) => {
         item.disabled = false;
       });
     },
