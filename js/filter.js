@@ -7,11 +7,10 @@
   const LOW_PRICE = 10000;
   const HIGH_PRICE = 50000;
 
-  const mapFilters = document.querySelector(`.map__filters`);
-  const housingType = mapFilters.querySelector(`#housing-type`);
-  const housingPrice = mapFilters.querySelector(`#housing-price`);
-  const housingRooms = mapFilters.querySelector(`#housing-rooms`);
-  const housingGuests = mapFilters.querySelector(`#housing-guests`);
+  const housingType = window.data.mapFilters.querySelector(`#housing-type`);
+  const housingPrice = window.data.mapFilters.querySelector(`#housing-price`);
+  const housingRooms = window.data.mapFilters.querySelector(`#housing-rooms`);
+  const housingGuests = window.data.mapFilters.querySelector(`#housing-guests`);
 
   const checkHousingType = (advert) => {
     return advert.offer.type === housingType.value || housingType.value === window.data.TYPE_ANY;
@@ -30,11 +29,11 @@
   };
 
   const checkHousingRooms = (advert) => {
-    return advert.offer.rooms >= housingRooms.value || housingRooms.value === window.data.TYPE_ANY;
+    return advert.offer.rooms === +housingRooms.value || housingRooms.value === window.data.TYPE_ANY;
   };
 
   const checkHousingGuests = (advert) => {
-    return advert.offer.guests >= housingGuests.value || housingGuests.value === window.data.TYPE_ANY;
+    return advert.offer.guests === +housingGuests.value || housingGuests.value === window.data.TYPE_ANY;
   };
 
   const checkHousingFeatures = (advert, features) => {
@@ -55,7 +54,7 @@
   const get5Adverts = (receivedAdverts, quantity) => {
     const filteredAdverts = [];
 
-    const housingFeatures = mapFilters.querySelectorAll(`.map__checkbox:checked`);
+    const housingFeatures = window.data.mapFilters.querySelectorAll(`.map__checkbox:checked`);
     const features = [];
 
     housingFeatures.forEach((feature) => {
@@ -81,14 +80,18 @@
     window.render.addPinsToMap(updateAdverts);
   };
 
+  const onMapFiltersChange = () => {
+    window.debounce(() => {
+      renderFilteredAdverts();
+    });
+  };
+
   window.filter = {
     activateSelectionForm: () => {
-      mapFilters.addEventListener(`change`, () => {
-        window.debounce(() => {
-          renderFilteredAdverts();
-        });
-      });
-    }
+      window.data.mapFilters.addEventListener(`change`, onMapFiltersChange);
+    },
+
+    onChange: onMapFiltersChange
   };
 })();
 

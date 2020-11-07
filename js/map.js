@@ -3,9 +3,7 @@
 (() => {
   // Activate Map & Filling address input
 
-  const mapFilters = document.querySelector(`.map__filters`);
   const adFormFieldsets = window.data.adForm.querySelectorAll(`fieldset`);
-  const addressInput = window.data.adForm.querySelector(`#address`);
   const adFormSubmitButton = window.data.adForm.querySelector(`.ad-form__submit`);
 
   const onMapPinMainMousedown = (evt) => {
@@ -20,9 +18,12 @@
     }
   };
 
-  const pinMainInitialPosition = {
-    x: Math.floor(window.data.InitialPinPosition.X + window.data.PinRoundSize.WIDTH / 2),
-    y: Math.floor(window.data.InitialPinPosition.Y + window.data.PinRoundSize.HEIGHT / 2)
+  const getPinMainInitialPosition = () => {
+    const location = {
+      x: Math.floor(window.data.InitialPinPosition.X + window.data.PinRoundSize.WIDTH / 2),
+      y: Math.floor(window.data.InitialPinPosition.Y + window.data.PinRoundSize.HEIGHT / 2)
+    };
+    return location;
   };
 
   const setActivateState = () => {
@@ -57,6 +58,7 @@
     const card = window.data.map.querySelector(`.map__card`);
     if (card) {
       window.data.map.removeChild(card);
+      document.removeEventListener(`keydown`, window.card.onClosePopupEscapeKeydown);
     }
   };
 
@@ -66,13 +68,13 @@
     adFormFieldsets.forEach((item) => {
       item.disabled = true;
     });
-    mapFilters.reset();
-    window.data.filterFormElements.forEach((item) => {
+    window.data.mapFilters.reset();
+    window.data.filterFormItems.forEach((item) => {
       item.disabled = true;
     });
     window.data.mapPinMain.style.left = `${window.data.InitialPinPosition.X}px`;
     window.data.mapPinMain.style.top = `${window.data.InitialPinPosition.Y}px`;
-    addressInput.value = `${pinMainInitialPosition.x}, ${pinMainInitialPosition.y}`;
+    window.form.setAddress(getPinMainInitialPosition());
     clearPins();
     clearCard();
     adFormSubmitButton.style.pointerEvents = `none`;

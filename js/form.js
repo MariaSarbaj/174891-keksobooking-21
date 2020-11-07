@@ -79,6 +79,7 @@
     const onSubmitSuccess = () => {
       window.data.adForm.reset();
       window.map.clearPins();
+      window.data.mapFilters.removeEventListener(`change`, window.filter.onChange);
       window.map.inactivate();
       window.utils.showSuccessMessage();
       roomNumber.addEventListener(`change`, onRoomNumberChange);
@@ -101,6 +102,7 @@
   resetButton.addEventListener(`click`, (evt) => {
     evt.preventDefault();
     window.data.adForm.reset();
+    window.data.mapFilters.removeEventListener(`change`, window.filter.onChange);
     window.map.inactivate();
     roomNumber.addEventListener(`change`, onRoomNumberChange);
     setPriceInputInitial();

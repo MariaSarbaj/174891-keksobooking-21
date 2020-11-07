@@ -3,7 +3,6 @@
 (() => {
   // Constants
 
-  const mapFilters = document.querySelector(`.map__filters`);
   const mapPinsArea = document.querySelector(`.map__pins`);
 
   window.data = {
@@ -64,7 +63,8 @@
     mapPinMain: document.querySelector(`.map__pin--main`),
     mapPinsAreaWidth: mapPinsArea.offsetWidth,
     adForm: document.querySelector(`.ad-form`),
-    filterFormElements: mapFilters.querySelectorAll(`select, fieldset`)
+    mapFilters: document.querySelector(`.map__filters`),
+    filterFormItems: document.querySelector(`.map__filters`).querySelectorAll(`select, fieldset`),
   };
 
 })();

@@ -131,7 +131,8 @@
   };
 
   window.card = {
-    create: createCard
+    create: createCard,
+    onClosePopupEscapeKeydown
   };
 
 })();
