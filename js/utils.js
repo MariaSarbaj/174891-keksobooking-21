@@ -10,8 +10,7 @@ const showMessage = (template, errorMessage) => {
   const messageBody = template.cloneNode(true);
 
   if (errorMessage) {
-    const errorText = messageBody.querySelector(`.error__message`);
-    errorText.innerText = errorMessage;
+    messageBody.querySelector(`.error__message`).textContent = errorMessage;
   }
 
   mainSection.appendChild(messageBody);

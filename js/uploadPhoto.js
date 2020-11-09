@@ -34,8 +34,8 @@ const choosePhoto = (evt) => {
         case photoInput:
           const photoPreview = document.createElement(`img`);
           photoPreview.src = reader.result;
-          photoPreview.style.maxWidth = `${PHOTO_SIZE}`;
-          photoPreview.style.maxHeight = `${PHOTO_SIZE}`;
+          photoPreview.style.maxWidth = `${PHOTO_SIZE}px`;
+          photoPreview.style.maxHeight = `${PHOTO_SIZE}px`;
           photoWrapper.appendChild(photoPreview);
           break;
       }

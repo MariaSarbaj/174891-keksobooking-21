@@ -61,8 +61,10 @@ const get5Adverts = (receivedAdverts, quantity) => {
   });
 
   for (let i = 0; i < receivedAdverts.length; i++) {
-    if (checkFilters(receivedAdverts[i]) && checkHousingFeatures(receivedAdverts[i], features)) {
-      filteredAdverts.push(receivedAdverts[i]);
+    const advert = receivedAdverts[i];
+
+    if (checkFilters(advert) && checkHousingFeatures(advert, features)) {
+      filteredAdverts.push(advert);
 
       if (filteredAdverts.length >= quantity) {
         break;
@@ -88,12 +90,11 @@ window.filter = {
     window.data.mapFilters.addEventListener(`change`, onMapFiltersChange);
   },
 
-  onChange: onMapFiltersChange,
-
   deactivateSelectionForm: () => {
     window.data.mapFilters.reset();
     window.data.filterFormItems.forEach((item) => {
       item.disabled = true;
     });
+    window.data.mapFilters.removeEventListener(`change`, onMapFiltersChange);
   }
 };

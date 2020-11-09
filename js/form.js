@@ -74,7 +74,6 @@ const setAddress = (location) => {
 
 const deactivatePage = () => {
   window.data.adForm.reset();
-  window.data.mapFilters.removeEventListener(`change`, window.filter.onChange);
   window.map.inactivate();
   roomNumber.addEventListener(`change`, onRoomNumberChange);
   setPriceInputInitial();
